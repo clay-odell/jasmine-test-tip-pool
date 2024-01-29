@@ -28,14 +28,28 @@ describe("Payments test (with setup and tear-down)", function() {
         expect(curTableDataList[1].innerText).toEqual('$20');
         expect(curTableDataList[2].innerText).toEqual('20%');
         
-        
     });
-
+    it('should create a new payment on createCurPayment()', function () {
+        let expectedPayment = {
+          billAmt: '100',
+          tipAmt: '20',
+          tipPercent: 20,
+        };
+        expect(createCurPayment()).toEqual(expectedPayment);
+    });
+    it('should add a row to #summaryTable on updateSummary()', () => {
+       let curPayment = createCurPayment();
+       allPayments['payment1'] = curPayment;
+       updateSummary();
+       expect(summaryTds[0].innerHTML).toEqual('$100');
+       expect(summaryTds[1].innerHTML).toEqual('$20');
+       expect(summaryTds[2].innerHTML).toEqual('20%');
+    });
+    
     afterEach(() => {
         billAmtInput.value = '';
         tipAmtInput.value = '';
         paymentForm.reset();
-        curPayment = {};
         paymentTbody.innerHTML = '';
         summaryTds[0].innerHTML = '';
         summaryTds[1].innerHTML = '';
